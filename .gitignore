@@ -1,3 +1,4 @@
 *checkpoint*
 dataset/MNIST
+dataset/cifar*
 *.pkl
