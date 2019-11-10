@@ -2,3 +2,4 @@
 dataset/MNIST
 dataset/cifar*
 *.pkl
+*.pyc
