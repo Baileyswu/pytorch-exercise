@@ -25,7 +25,7 @@ class TorchDataset(Dataset):
  
     def __getitem__(self, i):
         index = i % self.len
-        unit = varFromPair(self.pairs[index], self.lang_in, self.lang_out)
+        unit = self.varFromPair(self.pairs[index])
         if self.trans != None:
             unit = self.data_preproccess(unit)
         return unit, self.pairs[index]
@@ -46,15 +46,15 @@ class TorchDataset(Dataset):
         data = self.trans(data)
         return data
 
-def indFromSentence(lang, sentence):
+    def indFromSentence(self, lang, sentence):
         return [lang.word2index[word] for word in sentence.split(' ')]
 
-def varFromSentence(lang, sentence):
-    ind = indFromSentence(lang, sentence)
-    ind.append(EOS_token)
-    return torch.LongTensor(ind).view(-1, 1)
+    def varFromSentence(self, lang, sentence):
+        ind = self.indFromSentence(lang, sentence)
+        ind.append(EOS_token)
+        return torch.LongTensor(ind).view(-1, 1)
 
-def varFromPair(pair, lang_in, lang_out):
-    input_variable = varFromSentence(lang_in, pair[0])
-    target_variable = varFromSentence(lang_out, pair[1])
-    return (input_variable, target_variable)
+    def varFromPair(self, pair):
+        input_variable = self.varFromSentence(self.lang_in, pair[0])
+        target_variable = self.varFromSentence(self.lang_out, pair[1])
+        return (input_variable, target_variable)
